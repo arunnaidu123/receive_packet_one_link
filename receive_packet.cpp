@@ -14,6 +14,7 @@
 #include <sched.h>
 #include <pthread.h>
 #include <time.h>
+#include <iomanip>
 
 template<class T>
 char* as_bytes(T& i)
@@ -128,8 +129,8 @@ int main(int argc, char* argv[])
       std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node;
       long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
       long double gbps = ((long double)(total_events*packet_size*8)/((long double)nsec));
-      long double packet_loss = abs(100*(gbps-(num_nodes*0.0021687825520833332))/(num_nodes*0.0021687825520833332));  
-      std::cout<<"  gbps: "<<gbps<<"  packet_loss: "<< packet_loss<<" % \r";
+      long double packet_loss = 100*(gbps-(num_nodes*0.0021687825520833332))/(num_nodes*0.0021687825520833332);  
+      std::cout<<"  gbps: "<<gbps<<"  packet_loss: "<<std::setprecision(8) << packet_loss<<" % \r";
       std::cout.flush();
       c++;
       //fpout<<data[46]<<"\n";
