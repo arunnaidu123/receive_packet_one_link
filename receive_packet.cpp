@@ -15,6 +15,12 @@
 #include <pthread.h>
 #include <time.h>
 
+template<class T>
+char* as_bytes(T& i)
+{ 
+  void* addr = &i;
+  return static_cast<char *>(addr);
+}
 
 
 int main(int argc, char* argv[])
@@ -23,6 +29,7 @@ int main(int argc, char* argv[])
   static const int udp_port_number = 1313;
   static const int packet_size = 4264;
   static const int max_events = 100;
+  int num_nodes = atoi(argv[2]);
   
   int sock_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);      
   if (sock_fd < 0)
@@ -76,11 +83,14 @@ int main(int argc, char* argv[])
   //struct timeval tv0 = get_time();
     
   
-  uint64_t total_events=0, missed_events=0;  
+  uint64_t total_events=0;  
   uint16_t *packet = new uint16_t[packet_size/2];
   
   std::chrono::system_clock::time_point start = std::chrono::high_resolution_clock::now();
-
+  
+  long int count=0,c=0;
+  //std::ofstream fpout("data.dat");
+  
   while (1)
   {
     uint32_t num_events = epoll_wait(epoll_fd, events, max_events, -1);
@@ -110,16 +120,23 @@ int main(int argc, char* argv[])
       }
       
     }
-    std::cout<<"beam_ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15];
-    long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
-    total_events += num_events;  
-    std::cout<<"  gbps: "<<((long double)(total_events*packet_size*8)/((long double)nsec))<<" \r";
-    std::cout.flush();
+    total_events += num_events;
+    if(count/1000==c)
+    {
+      int rack = packet[16]/40;
+      int node = (packet[16]/4)%10;
+      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node;
+      long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
+      long double gbps = ((long double)(total_events*packet_size*8)/((long double)nsec));
+      long double packet_loss = abs(100*(gbps-(num_nodes*0.0021687825520833332))/(num_nodes*0.0021687825520833332));  
+      std::cout<<"  gbps: "<<gbps<<"  packet_loss: "<< packet_loss<<" % \r";
+      std::cout.flush();
+      c++;
+      //fpout<<data[46]<<"\n";
+      //fpout.flush();
+    }
+    count++;
   }
-
+  //fpout.close();
   return 0;
-}
-        
-      
-
-
+} 
