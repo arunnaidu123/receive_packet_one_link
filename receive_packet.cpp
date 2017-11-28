@@ -126,7 +126,9 @@ int main(int argc, char* argv[])
     {
       int rack = packet[16]/40;
       int node = (packet[16]/4)%10;
-      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node;
+      uint64_t *fpga_counts;
+      fpga_counts = reinterpret_cast<uint64_t*>(packet);
+      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node<<" FPGA count:"<< fpga_counts[1];
       long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
       long double gbps = ((long double)(total_events*packet_size*8)/((long double)nsec));
       long double packet_loss = 100*(gbps-(num_nodes*0.0021687825520833332))/(num_nodes*0.0021687825520833332);  
