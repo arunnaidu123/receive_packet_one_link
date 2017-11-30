@@ -128,12 +128,12 @@ int main(int argc, char* argv[])
     if( packet[16]<512)
     {
       rack = packet[16]/40;
-      node = (packet[16]/4)%10;
+      node = 9-(packet[16]/4)%10;
     }
     else
     {
       rack = (packet[16]-512)/40;
-      node = ((packet[16]-512)/4)%10;
+      node = 9-((packet[16]-512)/4)%10;
       south =1;
     }
     
