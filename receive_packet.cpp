@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
     if(count/1000==c)
     {
       int dect_nodes = 0;
-      for(int i=0;i<256;i++)  dect_nodes+=nodes[i];
+      for(int i=0;i<256;i++) dect_nodes+=nodes[i];
       if(dect_nodes==0) dect_nodes=1;
       uint64_t *fpga_counts;
       fpga_counts = reinterpret_cast<uint64_t*>(packet);
@@ -162,50 +162,62 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[r*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[r*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
       }
       
-      for(int r=8;r<14;r++)
+      for(int r=8;r<13;r++)
       {
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[(r-1)*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
  
       }     
       
-      
+      std::cout<<"Hut: North Rack: 13 ";
+      for(int i=2;i<10;i++)
+      {
+        if(nodes[120+9-i]==1) std::cout<<i<<" ON ";
+         else std::cout<<i<<" OF ";
+      }
+
+      std::cout<<"\n\n";
   
       for(int r=0;r<7;r++)
       {
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+r*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         } 
-        std::cout<<"\ni\n";
+        std::cout<<"\n\n";
       }
          
-      for(int r=8;r<14;r++)
+      for(int r=8;r<13;r++)
       {
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r-1)*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
 
       }
- 
-
+      std::cout<<"Hut: South Rack: 13 ";
+      for(int i=2;i<10;i++) 
+      {
+        if(nodes[248+9-i]==1) std::cout<<i<<" ON ";
+         else std::cout<<i<<" OF ";
+      }
+      std::cout<<"\n\n";
       std::cout.flush();
       c++;
       
