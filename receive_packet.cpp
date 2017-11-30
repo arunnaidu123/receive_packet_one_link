@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
       node = 9-((packet[16]-512)/4)%10;
       south =1;
     }
-    
+    if(rack>6) rack += 1;
     nodes[packet[16]/4] = 1;
     if(count/1000==c)
     {
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
       if(dect_nodes==0) dect_nodes=1;
       uint64_t *fpga_counts;
       fpga_counts = reinterpret_cast<uint64_t*>(packet);
-      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15];
+      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" "<<packet[16];
       if(south==0)std::cout<<" Hut: North ";
       else std::cout<<" Hut: South ";
       std::cout<<" Rack: "<<rack<<" Node: "<<node<<" FPGA count:"<<fpga_counts[1];
