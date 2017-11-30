@@ -31,7 +31,8 @@ int main(int argc, char* argv[])
   static const int packet_size = 4264;
   static const int max_events = 100;
   int num_nodes = atoi(argv[2]);
-  
+  int *nodes = new int[256];
+ 
   int sock_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);      
   if (sock_fd < 0)
   {
@@ -94,8 +95,9 @@ int main(int argc, char* argv[])
   
   while (1)
   {
+    int rack,node;
     uint32_t num_events = epoll_wait(epoll_fd, events, max_events, -1);
-
+   
     if (num_events < 0)
     {
       std::cout << "network thread: epoll_wait() failed: " << strerror(errno) << std::endl;
@@ -122,17 +124,30 @@ int main(int argc, char* argv[])
       
     }
     total_events += num_events;
+    
+    if( packet[16]<512)
+    {
+      rack = packet[16]/40;
+      node = (packet[16]/4)%10;
+    }
+    else
+    {
+      rack = (packet[16]-512)/40;
+      node = ((packet[16]-512)/4)%10;
+    }
+    
+    nodes[packet[16]/4] = 1;
     if(count/1000==c)
     {
-      int rack = packet[16]/40;
-      int node = (packet[16]/4)%10;
+      int dect_nodes = 0;
+      for(int i=0;i<256;i++)  dect_nodes+=nodes[i];
       uint64_t *fpga_counts;
       fpga_counts = reinterpret_cast<uint64_t*>(packet);
-      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node<<" FPGA count:"<< fpga_counts[1];
+      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" Rack: "<<rack<<" Node: "<<node<<" FPGA count:"<<fpga_counts[1];
       long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
       long double gbps = ((long double)(total_events*packet_size*8)/((long double)nsec));
       long double packet_loss = 100*(gbps-(num_nodes*0.0021687825520833332))/(num_nodes*0.0021687825520833332);  
-      std::cout<<"  gbps: "<<gbps<<"  packet_loss: "<<std::setprecision(8) << packet_loss<<" % \r";
+      std::cout<<" detected nodes: "<<dect_nodes<<"  gbps: "<<gbps<<"  packet_loss: "<<std::setprecision(8) << packet_loss<<" % \r";
       std::cout.flush();
       c++;
       //fpout<<data[46]<<"\n";
