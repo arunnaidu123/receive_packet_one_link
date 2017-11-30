@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   static const int packet_size = 4264;
   static const int max_events = 100;
   //int num_nodes = atoi(argv[2]);
-  int *nodes = new int[256];
+  int *nodes = new int[300];
  
   int sock_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);      
   if (sock_fd < 0)
@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
     if(count/1000==c)
     {
       int dect_nodes = 0;
-      for(int i=0;i<256;i++) dect_nodes+=nodes[i];
+      for(int i=0;i<258;i++) dect_nodes+=nodes[i];
       if(dect_nodes==0) dect_nodes=1;
       uint64_t *fpga_counts;
       fpga_counts = reinterpret_cast<uint64_t*>(packet);
@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[r*10+9-i]==1) std::cout<<i<<" ON ";
+          if(nodes[r*10+i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
+          if(nodes[(r-1)*10+i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r)*10+9-i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r)*10+i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         } 
         std::cout<<"\n\n";
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r-1)*10+i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
       std::cout<<"Hut: South Rack: 13 ";
       for(int i=2;i<10;i++) 
       {
-        if(nodes[248+9-i]==1) std::cout<<i<<" ON ";
+        if(nodes[248+i]==1) std::cout<<i<<" ON ";
          else std::cout<<i<<" OF ";
       }
       std::cout<<"\n\n";
