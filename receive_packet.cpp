@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
       south =1;
     }
     
-    nodes[south*128+rack*10+node] = 1;
+    nodes[south*128+rack*10+(9-node)] = 1;
     if(rack>6) rack += 1;
 
     if(count/1000==c)
@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[r*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[r*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: North Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[(r-1)*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r)*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         } 
         std::cout<<"\n\n";
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
         std::cout<<"Hut: South Rack: "<<r<<" ";
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r-1)*10+i]==1) std::cout<<i<<" ON ";
+          if(nodes[128+(r-1)*10+9-i]==1) std::cout<<i<<" ON ";
           else std::cout<<i<<" OF ";
         }
         std::cout<<"\n\n";
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
       std::cout<<"Hut: South Rack: 13 ";
       for(int i=2;i<10;i++) 
       {
-        if(nodes[248+i]==1) std::cout<<i<<" ON ";
+        if(nodes[248+9-i]==1) std::cout<<i<<" ON ";
          else std::cout<<i<<" OF ";
       }
       std::cout<<"\n\n";
