@@ -137,7 +137,8 @@ int main(int argc, char* argv[])
       south =1;
     }
     
-    nodes[south*128+rack*10+(9-node)] = 1;
+    //nodes[south*128+rack*10+(9-node)] = 1;
+    nodes[packet[16]] = 1;
     if(rack>6) rack += 1;
 
     if(count/1000==c)
