@@ -159,50 +159,46 @@ int main(int argc, char* argv[])
       
       for(int r=0;r<7;r++)
       {
-        std::cout<<"Hut: North Rack: "<<r<<" ";
+        std::cout<<"Hut: North Rack: "<<r;
         for(int i=0;i<10;i++)
         {
-          if(nodes[r*10+i]==1) std::cout<<i<<" ON ";
-          else std::cout<<i<<" OF ";
+          if(nodes[r*10+i]==1) std::cout<<Node: "<<i<<" ON";
+          else std::cout<<Node: "<<i<<" OFF";
         }
-        std::cout<<"\n\n";
+        std::cout<<"\n";
       }
       
       for(int r=8;r<14;r++)
       {
-        std::cout<<"Hut: North Rack: "<<r<<" ";
+        std::cout<<"Hut: North Rack: "<<r;
         for(int i=0;i<10;i++)
         {
-          if(nodes[(r-1)*10+i]==1) std::cout<<i<<" ON ";
-          else std::cout<<i<<" OF ";
-        }
-        std::cout<<"\n\n";
- 
+          if(nodes[(r-1)*10+i]==1) std::cout<<Node: "<<i<<" ON";
+          else std::cout<<Node: "<<i<<" OFF";
+        } 
       }     
       
       
   
       for(int r=0;r<7;r++)
       {
-        std::cout<<"Hut: South Rack: "<<r<<" ";
+        std::cout<<"Hut: South Rack: "<<r;
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+r*10+i]==1) std::cout<<i<<" ON ";
-          else std::cout<<i<<" OF ";
+          if(nodes[128+r*10+i]==1) std::cout<<Node: "<<i<<" ON";
+          else std::cout<<Node: "<<i<<" OFF";
         } 
-        std::cout<<"\ni\n";
+        std::cout<<"\n";
       }
-         
+        
       for(int r=8;r<14;r++)
       {
-        std::cout<<"Hut: South Rack: "<<r<<" ";
+        std::cout<<"Hut: South Rack: "<<r;
         for(int i=0;i<10;i++)
         {
-          if(nodes[128+(r-1)*10+i]==1) std::cout<<i<<" ON ";
-          else std::cout<<i<<" OF ";
+          if(nodes[i128+(r-1)*10+i]==1) std::cout<<Node: "<<i<<" ON";
+          else std::cout<<Node: "<<i<<" OFF";
         }
-        std::cout<<"\n\n";
-
       }
  
 
