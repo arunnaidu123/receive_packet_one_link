@@ -27,8 +27,8 @@ char* as_bytes(T& i)
 int main(int argc, char* argv[])
 {
   
-  static const int udp_port_number = 1313;
-  static const int packet_size = 4264;
+  static const int udp_port_number = 1414;
+  static const int packet_size = 5032;
   static const int max_events = 100;
   //int num_nodes = atoi(argv[2]);
   int *nodes = new int[300];
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
     
   
   uint64_t total_events=0;  
-  uint16_t *packet = new uint16_t[packet_size/2];
+  uint32_t *packet = new uint32_t[packet_size/4];
   
   std::chrono::system_clock::time_point start = std::chrono::high_resolution_clock::now();
   
@@ -125,20 +125,20 @@ int main(int argc, char* argv[])
     }
     total_events += num_events;
     int south=0; 
-    if( packet[16]<512)
+    if( packet[2]<512)
     {
-      rack = packet[16]/40;
-      node = 9-(packet[16]/4)%10;
+      rack = packet[2]/40;
+      node = 9-(packet[2]/4)%10;
     }
     else
     {
-      rack = (packet[16]-512)/40;
-      node = 9-((packet[16]-512)/4)%10;
+      rack = (packet[2]-512)/40;
+      node = 9-((packet[2]-512)/4)%10;
       south =1;
     }
     
-    //nodes[south*128+rack*10+(9-node)] = 1;
-    nodes[packet[16]] = 1;
+    nodes[south*128+rack*10+(9-node)] = 1;
+    //nodes[packet[2]] = 1;
     if(rack>6) rack += 1;
 
     if(count/1000==c)
@@ -148,13 +148,13 @@ int main(int argc, char* argv[])
       if(dect_nodes==0) dect_nodes=1;
       uint64_t *fpga_counts;
       fpga_counts = reinterpret_cast<uint64_t*>(packet);
-      std::cout<<"Beam-Ids: "<<packet[12]<<" "<<packet[13]<<" "<<packet[14]<<" "<<packet[15]<<" "<<packet[16];
+      std::cout<<"Beam-Ids: "<<packet[6]<<" Freq_id "<<packet[2];
       if(south==0)std::cout<<" Hut: North ";
       else std::cout<<" Hut: South ";
       std::cout<<" Rack: "<<rack<<" Node: "<<node<<" FPGA count:"<<fpga_counts[1];
       long nsec = std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::high_resolution_clock::now() - start).count();
       long double gbps = ((long double)(total_events*packet_size*8)/((long double)nsec));
-      long double packet_loss = 100*(gbps-(dect_nodes*0.0021687825520833332))/(dect_nodes*0.0021687825520833332);  
+      long double packet_loss = 100*(gbps-(dect_nodes*0.02516))/(dect_nodes*0.02516);  
       std::cout<<" detected nodes: "<<dect_nodes<<"  gbps: "<<gbps<<"  packet_loss: "<<std::setprecision(8) << packet_loss<<" % \n";
       
       
