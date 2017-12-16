@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
   
   static const int udp_port_number = 1414;
   static const int packet_size = 5032;
-  static const int max_events = 100;
+  static const int max_events = 300;
   //int num_nodes = atoi(argv[2]);
   int *nodes = new int[300];
  
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
     //nodes[packet[2]] = 1;
     if(rack>6) rack += 1;
 
-    if(count/1000==c)
+    if(count/50000==c)
     {
       int dect_nodes = 0;
       for(int i=0;i<258;i++) dect_nodes+=nodes[i];
